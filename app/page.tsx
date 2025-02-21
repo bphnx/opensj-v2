@@ -5,7 +5,7 @@ import StyleParameter from "./components/styleParameter";
 import StylePoints from "./components/stylePoints";
 import StyleCodes from './components/styleCodes';
 
-const calculateCode = (BAS: number, MOV: number, DIN: number, COM: number, SAPD: number, GCC: number, DIF: number, SOG: number, PEN: number) => {
+const calculateCode = (BAS: number, MOV: number, DIN: number, COM: number, DIF: number, SOG: number, PEN: number) => {
   let a = '';
   let b = '';
   let c = '';
@@ -17,10 +17,10 @@ const calculateCode = (BAS: number, MOV: number, DIN: number, COM: number, SAPD:
   if (PEN > 9) {
     charPenalty = reducedAlphabet[(PEN - 10)];
   }
-
-  if ((COM == 0 && SAPD == 0 && DIF == 0) && (MOV + DIN + GCC < 6) && (MOV < 3 && DIN < 3 && GCC < 3)) {
+ 
+  if ((COM == 0 && DIF == 0) && (BAS + MOV + DIN < 6) && (BAS < 3 && MOV < 3 && DIN < 3)) {
     // One-letter format
-    a = englishAlphabet[(MOV * 3 + DIN) * 3 + GCC];
+    a = englishAlphabet[((MOV * 3 + DIN) * 3 + BAS) % 26];
     if (SOG > 0) {
       yz = "z" + SOG.toString();
       if (PEN > 0) {
@@ -29,10 +29,10 @@ const calculateCode = (BAS: number, MOV: number, DIN: number, COM: number, SAPD:
     } else if (PEN > 0) {
       yz = "z0" + charPenalty;
     }
-  } else if (SAPD < 2 && COM < 2 && DIF < 2) {
+  } else if ((COM < 2 && DIF < 2) && (BAS < 5 && MOV < 5 && DIN < 5)) {
     // Two-letters format
-    const value = (((((MOV * 4 + DIN) * 4 + GCC) * 2 + COM) * 2 + SAPD) * 2 + DIF);
-    a = englishAlphabet[Math.floor(value / 23)];
+    const value = ((((MOV * 4 + DIN) * 4 + BAS) * 2 + COM) * 2 + DIF);
+    a = englishAlphabet[Math.floor(value / 23) % 26];
     b = reducedAlphabet[value % 23];
     if (SOG > 0) {
       yz = SOG.toString();
@@ -44,8 +44,8 @@ const calculateCode = (BAS: number, MOV: number, DIN: number, COM: number, SAPD:
     }
   } else {
     // Three-letters format
-    const value = (((((MOV * 4 + DIN) * 4 + GCC) * 4 + COM) * 4 + SAPD) * 4 + DIF);
-    a = englishAlphabet[Math.floor(value / (23 * 26))];
+    const value = ((((MOV * 4 + DIN) * 4 + BAS) * 4 + COM) * 4 + DIF);
+    a = englishAlphabet[Math.floor(value / (23 * 26)) % 26];
     const remainder = value % (23 * 26);
     b = reducedAlphabet[Math.floor(remainder / 26)];
     c = englishAlphabet[remainder % 26];
@@ -58,7 +58,7 @@ const calculateCode = (BAS: number, MOV: number, DIN: number, COM: number, SAPD:
       yz = "0" + charPenalty;
     }
   }
-  const fullCode = a + (BAS + MOV + DIN + COM + SAPD + GCC + DIF).toString() + b + c + yz;
+  const fullCode = a + (BAS + MOV + DIN + COM + DIF).toString() + b + c + yz;
   return fullCode;
 }
 
@@ -69,8 +69,8 @@ const useParameterState = (initialValue: number) => {
 };
 
 export default function Home() {
-  const [leftValue, setLeftValue] = useState(5.5);
-  const [rightValue, setRightValue] = useState(5.5);
+  const [leftValue, setLeftValue] = useState(5.0);
+  const [rightValue, setRightValue] = useState(5.0);
 
   const bas = useParameterState(0);
   const mov = useParameterState(0);
@@ -82,26 +82,26 @@ export default function Home() {
   const sog = useParameterState(0);
   const pen = useParameterState(0);
 
-  const [leftCode, setLeftCode] = useState(calculateCode(bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, sapd.leftValue, gcc.leftValue, dif.leftValue, sog.leftValue, pen.leftValue));
-  const [rightCode, setRightCode] = useState(calculateCode(bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, sapd.rightValue, gcc.rightValue, dif.rightValue, sog.rightValue, pen.rightValue));
+  const [leftCode, setLeftCode] = useState(calculateCode(bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, dif.leftValue, sog.leftValue, pen.leftValue));
+  const [rightCode, setRightCode] = useState(calculateCode(bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, dif.rightValue, sog.rightValue, pen.rightValue));
 
   useEffect(() => {
-    setLeftCode(calculateCode(bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, sapd.leftValue, gcc.leftValue, dif.leftValue, sog.leftValue, pen.leftValue));
-  }, [bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, sapd.leftValue, gcc.leftValue, dif.leftValue, sog.leftValue, pen.leftValue]);
+    setLeftCode(calculateCode(bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, dif.leftValue, sog.leftValue, pen.leftValue));
+  }, [bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, dif.leftValue, sog.leftValue, pen.leftValue]);
 
   useEffect(() => {
-    setRightCode(calculateCode(bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, sapd.rightValue, gcc.rightValue, dif.rightValue, sog.rightValue, pen.rightValue));
-  }, [bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, sapd.rightValue, gcc.rightValue, dif.rightValue, sog.rightValue, pen.rightValue]);
+    setRightCode(calculateCode(bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, dif.rightValue, sog.rightValue, pen.rightValue));
+  }, [bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, dif.rightValue, sog.rightValue, pen.rightValue]);
 
 
   const incrementLeftValue = (value: number) => {
     setLeftValue(prev => parseFloat((prev + value).toFixed(1)));
-    setLeftCode(calculateCode(bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, sapd.leftValue, gcc.leftValue, dif.leftValue, sog.leftValue, pen.leftValue));
+    setLeftCode(calculateCode(bas.leftValue, mov.leftValue, din.leftValue, com.leftValue, dif.leftValue, sog.leftValue, pen.leftValue));
   };
 
   const incrementRightValue = (value: number) => {
     setRightValue(prev => parseFloat((prev + value).toFixed(1)));
-    setRightCode(calculateCode(bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, sapd.rightValue, gcc.rightValue, dif.rightValue, sog.rightValue, pen.rightValue));
+    setRightCode(calculateCode(bas.rightValue, mov.rightValue, din.rightValue, com.rightValue, dif.rightValue, sog.rightValue, pen.rightValue));
   };
 
   const resetValues = () => {
@@ -123,8 +123,8 @@ export default function Home() {
     sog.setRightValue(0);
     pen.setLeftValue(0);
     pen.setRightValue(0);
-    setLeftValue(5.5);
-    setRightValue(5.5);
+    setLeftValue(5.0);
+    setRightValue(5.0);
   };
 
   let pressTimer: NodeJS.Timeout;
@@ -146,8 +146,6 @@ export default function Home() {
         <StyleParameter label="MOV" isSog={false} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={mov.leftValue} rightValue={mov.rightValue} setLeftValue={mov.setLeftValue} setRightValue={mov.setRightValue} />
         <StyleParameter label="DIN" isSog={false} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={din.leftValue} rightValue={din.rightValue} setLeftValue={din.setLeftValue} setRightValue={din.setRightValue} />
         <StyleParameter label="COM" isSog={false} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={com.leftValue} rightValue={com.rightValue} setLeftValue={com.setLeftValue} setRightValue={com.setRightValue} />
-        <StyleParameter label="SAPD" isSog={false} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={sapd.leftValue} rightValue={sapd.rightValue} setLeftValue={sapd.setLeftValue} setRightValue={sapd.setRightValue} />
-        <StyleParameter label="GCC" isSog={false} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={gcc.leftValue} rightValue={gcc.rightValue} setLeftValue={gcc.setLeftValue} setRightValue={gcc.setRightValue} />
         <StyleParameter label="DIF" isSog={false} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={dif.leftValue} rightValue={dif.rightValue} setLeftValue={dif.setLeftValue} setRightValue={dif.setRightValue} />
         <StyleParameter label="SOG" isSog={true} isPen={false} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={sog.leftValue} rightValue={sog.rightValue} setLeftValue={sog.setLeftValue} setRightValue={sog.setRightValue} />
         <StyleParameter label="PEN" isSog={false} isPen={true} incrementLeftValue={incrementLeftValue} incrementRightValue={incrementRightValue} leftValue={pen.leftValue} rightValue={pen.rightValue} setLeftValue={pen.setLeftValue} setRightValue={pen.setRightValue} />

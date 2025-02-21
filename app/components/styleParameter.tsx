@@ -20,10 +20,10 @@ const StyleParameter: React.FC<StyleParameterProps> = ({ label, isSog, isPen, in
     const [leftTotalIncrement, setLeftTotalIncrement] = useState(0);
     const [rightTotalIncrement, setRightTotalIncrement] = useState(0);
 
-    const max = isPen ? 20 : 3;
+    const max = isPen ? 20 : 5;
 
     const incrementValue = (value: number, setValue: React.Dispatch<React.SetStateAction<number>>, max: number) => {
-        setValue((value + 0.5) % (max + 1));
+        setValue((value + 1) % (max + 1));
     };
 
     const checkColor = () => {
@@ -47,8 +47,8 @@ const StyleParameter: React.FC<StyleParameterProps> = ({ label, isSog, isPen, in
                         setLeftTotalIncrement(prev => prev + 0.1);
                     }
                     else {
-                        incrementLeftValue(leftValue === max ? -(max * 0.1) : 0.1);
-                        setLeftTotalIncrement(prev => prev + 0.1);
+                        incrementLeftValue(leftValue === max ? -(max * 0.2) : 0.2);
+                        setLeftTotalIncrement(prev => prev + 0.2);
                     }
                 }}
             >
@@ -68,8 +68,8 @@ const StyleParameter: React.FC<StyleParameterProps> = ({ label, isSog, isPen, in
                         setRightTotalIncrement(prev => prev + 0.1);
                     }
                     else {
-                        incrementRightValue(rightValue === max ? -(max * 0.1) : 0.1);
-                        setRightTotalIncrement(prev => prev + 0.1);
+                        incrementRightValue(rightValue === max ? -(max * 0.2) : 0.2);
+                        setRightTotalIncrement(prev => prev + 0.2);
                     }
                 }}
             >
