@@ -2,11 +2,13 @@
 
 This app is a fork of [OpenSJ](https://github.com/bphnx/openSJ)
 
+[Published here](https://bphnx.github.io/opensj-v2/)
+
 The app has been modified as follows:
 - SAPD and GCC parameters have been removed.
 - Now each parameter (except PEN) gets up to 5 instead of 3.
 - The starting value for each competitor is 5.0.
-- The encoding algorithm has been modified (see below)
+- The encoding algorithm [has been modified](https://github.com/bphnx/opensj-v2#the-new-algorithm)
 
 The reasoning behind the modifications are:
 - SAPD is barely used at all, and all those techniques can be included as COM or as a combination of BAS/MOV/DIN
