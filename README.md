@@ -21,8 +21,8 @@ The reasoning behind the modifications are:
 - Now to get a perfect 10 it is not needed to use SOG at all, reducing the weight of the SJ opinion on the score.
 
 ## Current issues
-- The perfect 10 is to get impossible in real life, because it needs 5 DIF, being a contradiction if the athlete has 5s in the other parameters. Ideally, the perfect 10 should be achievable only using BAS/MOV/DIN/COM.
-- The current maximum score is 10.5, and it should be 10.
+- The perfect 10 is impossible to get in real life, because it needs 5 DIF, being a contradiction if the athlete has 5s in the other parameters. Ideally, the perfect 10 should be achievable only using BAS/MOV/DIN/COM.
+- The current maximum score is 10.5, it should be 10.
 - There are negative scores. Minimum should be 0.
 
 ## Pending features
