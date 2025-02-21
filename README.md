@@ -16,8 +16,8 @@ The app has been modified as follows:
 
 The reasoning behind the modifications are:
 - SAPD is barely used at all, and all those techniques can be included as COM or as a combination of BAS/MOV/DIN
-- GCC nowadays is just the average of BAS/MOV/DIN
-- Since now we have less parameters, we can increase the ticks to the remaining ones, allowing the Style Judge to have more values available per parameter.
+- GCC nowadays is just the average of BAS/MOV/DIN, it does not give useful insights on the athlete.
+- Since now we have less parameters, we can increase the ticks to the remaining ones, allowing the Style Judge to have more granularity per parameter.
 - Now to get a perfect 10 it is not needed to use SOG at all, reducing the weight of the SJ opinion on the score.
 
 ## Current issues
