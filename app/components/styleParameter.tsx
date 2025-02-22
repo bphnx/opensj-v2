@@ -35,7 +35,7 @@ const StyleParameter: React.FC<StyleParameterProps> = ({ label, isSog, isPen, in
     return (
         <div className="row" style={{ backgroundColor: `${checkColor()}` }}>
             <button
-                style={{ flex: '1', backgroundColor: `${checkColor()}`, width: '50px' }}
+                style={{ flex: '1', backgroundColor: `${checkColor()}`, width: '10vw' }}
                 onClick={() => {
                     incrementValue(leftValue, setLeftValue, max);
                     if (isPen) {
@@ -54,9 +54,9 @@ const StyleParameter: React.FC<StyleParameterProps> = ({ label, isSog, isPen, in
             >
                 {leftValue}
             </button>
-            <div style={{ flex: '2', textAlign: 'center', width: '300px' }}>{label}</div>
+            <div style={{ flex: '2', textAlign: 'center', width: '50vw' }}>{label}</div>
             <button
-                style={{ flex: '1', backgroundColor: `${checkColor()}`, width: '50px' }}
+                style={{ flex: '1', backgroundColor: `${checkColor()}`, width: '10vw' }}
                 onClick={() => {
                     incrementValue(rightValue, setRightValue, max);
                     if (isPen) {
