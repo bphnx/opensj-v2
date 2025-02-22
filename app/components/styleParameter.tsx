@@ -54,7 +54,7 @@ const StyleParameter: React.FC<StyleParameterProps> = ({ label, isSog, isPen, in
             >
                 {leftValue}
             </button>
-            <div style={{ flex: '2', textAlign: 'center', width: '400px' }}>{label}</div>
+            <div style={{ flex: '2', textAlign: 'center', width: '300px' }}>{label}</div>
             <button
                 style={{ flex: '1', backgroundColor: `${checkColor()}`, width: '50px' }}
                 onClick={() => {
